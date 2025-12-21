@@ -15,7 +15,7 @@ import { MonacoBinding } from "y-monaco";
 import { io } from "socket.io-client";
 
 // --- CONFIGURATION ---
-const socket = io(process.env.REACT_APP_BACKEND_URL || "http://localhost:3001");
+const socket = io("https://collaborative-editor-server.onrender.com");
 const COLORS = [
   "#FF5733",
   "#33FF57",
@@ -51,11 +51,18 @@ function AuthPage() {
     e.preventDefault();
     const endpoint = isLogin ? "login" : "register";
     try {
-      const res = await fetch(`http://localhost:3001/auth/${endpoint}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
+      // Change this:
+      // const response = await fetch('http://localhost:3001/auth/register', { ... });
+
+      // To this (Your Render URL):
+      const response = await fetch(
+        "https://collaborative-editor-server.onrender.com/auth/register",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        }
+      );
       const data = await res.json();
       if (res.ok && data.token) {
         localStorage.setItem("token", data.token);
