@@ -49,21 +49,22 @@ function AuthPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const endpoint = isLogin ? "login" : "register";
-    try {
-      // Change this:
-      // const response = await fetch('http://localhost:3001/auth/register', { ... });
+    setError("");
 
-      // To this (Your Render URL):
-      const response = await fetch(
-        "https://collaborative-editor-server.onrender.com/auth/register",
+    const endpoint = isLogin ? "login" : "register";
+
+    try {
+      const res = await fetch(
+        `https://collaborative-editor-server.onrender.com/auth/${endpoint}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
+          body: JSON.stringify(form), // ✅ send form
         }
       );
-      const data = await res.json();
+
+      const data = await res.json(); // ✅ res is defined here
+
       if (res.ok && data.token) {
         localStorage.setItem("token", data.token);
         localStorage.setItem("username", data.username);
@@ -75,6 +76,7 @@ function AuthPage() {
       setError("Server error. Is the backend running?");
     }
   };
+
 
   return (
     <div
