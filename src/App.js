@@ -168,7 +168,7 @@ function Dashboard() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost:3001/documents", {
+    fetch("https://collaborative-editor-server.onrender.com/documents", {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     })
       .then((r) => r.json())
@@ -186,10 +186,13 @@ function Dashboard() {
       return;
 
     try {
-      const res = await fetch(`http://localhost:3001/documents/${id}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
+      const res = await fetch(
+        `https://collaborative-editor-server.onrender.com/documents/${id}`,
+        {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      );
 
       if (res.ok) {
         // Remove the deleted document from the local state list
@@ -329,9 +332,12 @@ function EditorPage() {
   useEffect(() => {
     if (!isAuthenticated()) return navigate("/login");
 
-    fetch(`http://localhost:3001/documents/${docId}/meta`, {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-    })
+    fetch(
+      `https://collaborative-editor-server.onrender.com/documents/${docId}/meta`,
+      {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      }
+    )
       .then((r) => r.json())
       .then((data) => {
         if (data.title) setTitle(data.title);
